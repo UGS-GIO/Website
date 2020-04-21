@@ -1,0 +1,765 @@
+<IfModule mod_speling.c>
+    CheckCaseOnly on
+    CheckSpelling on
+</IfModule>
+
+# BEGIN W3TC Browser Cache
+<IfModule mod_deflate.c>
+    <IfModule mod_headers.c>
+        Header append Vary User-Agent env=!dont-vary
+    </IfModule>
+        AddOutputFilterByType DEFLATE text/css text/x-component application/x-javascript application/javascript text/javascript text/x-js text/html text/richtext image/svg+xml text/plain text/xsd text/xsl text/xml image/x-icon application/json
+    <IfModule mod_mime.c>
+        # DEFLATE by extension
+        AddOutputFilter DEFLATE js css htm html xml
+    </IfModule>
+</IfModule>
+# END W3TC Browser Cache
+# BEGIN W3TC Page Cache core
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{HTTP:Accept-Encoding} gzip
+    RewriteRule .* - [E=W3TC_ENC:_gzip]
+    RewriteCond %{HTTP_COOKIE} w3tc_preview [NC]
+    RewriteRule .* - [E=W3TC_PREVIEW:_preview]
+    RewriteCond %{REQUEST_METHOD} !=POST
+    RewriteCond %{QUERY_STRING} =""
+    RewriteCond %{REQUEST_URI} \/$
+    RewriteCond %{HTTP_COOKIE} !(comment_author|wp\-postpass|w3tc_logged_out|wordpress_logged_in|wptouch_switch_toggle) [NC]
+    RewriteCond "%{DOCUMENT_ROOT}/wp-content/cache/page_enhanced/%{HTTP_HOST}/%{REQUEST_URI}/_index%{ENV:W3TC_PREVIEW}.html%{ENV:W3TC_ENC}" -f
+    RewriteRule .* "/wp-content/cache/page_enhanced/%{HTTP_HOST}/%{REQUEST_URI}/_index%{ENV:W3TC_PREVIEW}.html%{ENV:W3TC_ENC}" [L]
+</IfModule>
+# END W3TC Page Cache core
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+php_value max_execution_time 300
+php_value max_input_time 300
+php_value max_input_vars 5000
+php_value memory_limit 512M
+
+# Redirect all traffic to https
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+
+# Redirect all www.geology.utah.gov to just geology.utah.gov
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+</IfModule>
+
+
+# Various Hacks for Performance
+<IfModule mod_rewrite.c>
+##RewriteEngine On
+#block DOS attacks on joomla folder
+#RedirectMatch 403 /\\joomla(/|$)
+#RedirectMatch 403 /\\wms_stgeorge(/|$)
+#RedirectMatch 403 /\\ucrc(/|$)
+
+#block from the ugs.state.ut.us referer
+# Options +FollowSymlinks
+##RewriteCond %{HTTP_REFERER} ugs\.state\.ut\.us [NC]
+##RewriteRule .* - [F]
+
+</IfModule>
+
+
+
+#redirect all PDF's here
+<IfModule mod_rewrite.c>
+#RewriteCond %{REQUEST_URI} .pdf$
+#RewriteRule ^(.*)$ http://files.geology.utah.gov$1 [L,R=301,NC]
+RedirectMatch 301 (.*)\.pdf$ http://files.geology.utah.gov$1.pdf
+RedirectMatch 301 (.*)\.xlsx$ http://files.geology.utah.gov$1.xlsx
+RedirectMatch 301 (.*)\.xls$ http://files.geology.utah.gov$1.xls
+RedirectMatch 301 (.*)\.zip$ http://files.geology.utah.gov$1.zip
+RedirectMatch 301 (.*)\.kml$ http://files.geology.utah.gov$1.kml
+RedirectMatch 301 (.*)\.kmz$ http://files.geology.utah.gov$1.kmz
+RedirectMatch 301 (.*)\.ppt$ http://files.geology.utah.gov$1.ppt
+RedirectMatch 301 (.*)\.pptx$ http://files.geology.utah.gov$1.pptx
+RedirectMatch 301 (.*)\.doc$ http://files.geology.utah.gov$1.doc
+RedirectMatch 301 (.*)\.docx$ http://files.geology.utah.gov$1.docx
+</IfModule>
+
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+#RewriteCond %{QUERY_STRING} page_id=22200
+#RewriteRule (.*) https://geology.utah.gov/apps/qfaults/index.html [R=302,L]
+
+#RedirectMatch 301 ^(.*)$ https://geology.utah.gov
+#Redirect 301 /maps/geomap/interactive/index.htm https://geology.utah.gov/?page_id=5101
+Redirect 301 /online/aerial_photos/index.htm https://geology.utah.gov/?page_id=5147
+Redirect 301 /teacher/tc/tc0599.htm https://geology.utah.gov/?page_id=6617
+
+#see https://httpd.apache.org/docs/current/mod/mod_alias.html#AliasMatch
+RedirectMatch 301 (?i)utahgeo/rockmineral/newminerals/newmin5.htm https://geology.utah.gov/?page_id=12794
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/26ldslides_svnts.htm https://geology.utah.gov/?page_id=11899
+RedirectMatch 301 (?i)utahgeo/water/weber_basin_project/article5.htm https://geology.utah.gov/?page_id=12140
+RedirectMatch 301 (?i)utahgeo/rockmineral/newminerals/newmin7.htm https://geology.utah.gov/?page_id=12336
+RedirectMatch 301 (?i)utahgeo/rockmineral/newminerals/newmin6.htm https://geology.utah.gov/?page_id=12371
+RedirectMatch 301 (?i)utahgeo/water/weber_basin_project/article3.htm https://geology.utah.gov/?page_id=12391
+RedirectMatch 301 (?i)utahgeo/rockmineral/newminerals/newmin4.htm https://geology.utah.gov/?page_id=12925
+RedirectMatch 301 (?i)utahgeo/geo/thrustfault.htm https://geology.utah.gov/?page_id=12929
+RedirectMatch 301 (?i)utahgeo/geo/thrustfault2.htm https://geology.utah.gov/?page_id=12929
+RedirectMatch 301 (?i)utahgeo/geo/thrustfault3.htm https://geology.utah.gov/?page_id=12929
+RedirectMatch 301 (?i)utahgeo/geo/thrustfault4.htm https://geology.utah.gov/?page_id=12929
+RedirectMatch 301 (?i)utahgeo/geo/thrustfault5.htm https://geology.utah.gov/?page_id=12929
+RedirectMatch 301 (?i)utahgeo/geo/thrustfault6.htm https://geology.utah.gov/?page_id=12929
+RedirectMatch 301 (?i)utahgeo/geo/thrustmap.htm https://geology.utah.gov/?page_id=12929
+RedirectMatch 301 (?i)utahgeo/rockmineral/index.htm https://geology.utah.gov/?page_id=5830
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/rkhd5.htm https://geology.utah.gov/?page_id=12955
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/rkhd499.htm https://geology.utah.gov/?page_id=1322
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/sunstone.htm https://geology.utah.gov/?page_id=13361
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/hpwndrst.htm https://geology.utah.gov/?page_id=13363
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/rkhd598.htm https://geology.utah.gov/?page_id=1338
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/quartz.htm https://geology.utah.gov/?page_id=1341
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/gypsumsd.htm https://geology.utah.gov/?page_id=135
+RedirectMatch 301 (?i)utahgeo/dinofossil/gsenmfossils.htm https://geology.utah.gov/?page_id=13512
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/oolitic.htm https://geology.utah.gov/?page_id=1355
+RedirectMatch 301 (?i)utahgeo/geo/geohistory.htm https://geology.utah.gov/?page_id=13555
+RedirectMatch 301 (?i)utahgeo/geo/geohistory2.htm https://geology.utah.gov/?page_id=13555
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/bandcalc.htm https://geology.utah.gov/?page_id=1358
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/springhill/summary21.htm https://geology.utah.gov/?page_id=1362
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/topaz.htm https://geology.utah.gov/?page_id=1366
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/slide_show/index.htm https://geology.utah.gov/?page_id=13795
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/slide_show/slidepages/slide1.htm https://geology.utah.gov/?page_id=13795
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/slide_show/slidepages/slide2.htm https://geology.utah.gov/?page_id=13795
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/slide_show/slidepages/slide3.htm https://geology.utah.gov/?page_id=13795
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/slide_show/slidepages/slide4.htm https://geology.utah.gov/?page_id=13795
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/slide_show/slidepages/slide5.htm https://geology.utah.gov/?page_id=13795
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/springhill/prior_activity.htm https://geology.utah.gov/?page_id=1388
+RedirectMatch 301 (?i)utahgeo/rockmineral/rockclub.htm https://geology.utah.gov/?page_id=148
+RedirectMatch 301 (?i)utahgeo/geo/index.htm https://geology.utah.gov/?page_id=17430
+RedirectMatch 301 (?i)utahgeo/index.htm https://geology.utah.gov/?page_id=17430
+RedirectMatch 301 (?i)utahgeo/hazards/ground_cracks/fissures.htm https://geology.utah.gov/?page_id=10854
+RedirectMatch 301 (?i)utahgeo/energy/index.htm https://geology.utah.gov/?page_id=5169
+RedirectMatch 301 (?i)utahgeo/energy/oilgas/index.htm https://geology.utah.gov/?page_id=5175
+RedirectMatch 301 (?i)utahgeo/energy/coal/index.htm https://geology.utah.gov/?page_id=5181
+RedirectMatch 301 (?i)utahgeo/water/index.htm https://geology.utah.gov/?page_id=5222
+RedirectMatch 301 (?i)utahgeo/hazards/index.htm https://geology.utah.gov/?page_id=5253
+RedirectMatch 301 (?i)utahgeO/hazards/index.htm https://geology.utah.gov/?page_id=5253
+RedirectMatch 301 (?i)utahgeo/hazards/liquefy.htm https://geology.utah.gov/?page_id=5262
+RedirectMatch 301 (?i)utahgeo/hazards/ground_cracks/index.htm https://geology.utah.gov/?page_id=5267
+RedirectMatch 301 (?i)utahgeo/hazards/radon.htm https://geology.utah.gov/?page_id=5269
+RedirectMatch 301 (?i)utahgeo/hazards/realtors.htm https://geology.utah.gov/?page_id=5287
+RedirectMatch 301 (?i)utahgeo/gsl/index.htm https://geology.utah.gov/?page_id=5298
+RedirectMatch 301 (?i)utahgeo/dinofossil/dinoage.htm https://geology.utah.gov/?page_id=5722
+RedirectMatch 301 (?i)utahgeo/dinofossil/falcarius/index.htm https://geology.utah.gov/?page_id=5726
+RedirectMatch 301 (?i)utahgeo/dinofossil/dinecret.htm https://geology.utah.gov/?page_id=5728
+RedirectMatch 301 (?i)utahgeo/dinofossil/dinojur.htm https://geology.utah.gov/?page_id=5730
+RedirectMatch 301 (?i)utahgeo/dinofossil/dinlcret.htm https://geology.utah.gov/?page_id=5734
+RedirectMatch 301 (?i)utahgeo/geo/geohist.htm https://geology.utah.gov/?page_id=5738
+RedirectMatch 301 (?i)utahgeo/dinofossil/stgeorgetracks/squatting.htm https://geology.utah.gov/?page_id=5784
+RedirectMatch 301 (?i)utahgeo/dinofossil/flamgorgetracks.htm https://geology.utah.gov/?page_id=5787
+RedirectMatch 301 (?i)utahgeo/hazards/eqfault/ibcshake/index.htm https://geology.utah.gov/?page_id=5795
+RedirectMatch 301 (?i)utahgeo/hazards/eqfault/eqfact.htm https://geology.utah.gov/?page_id=5796
+RedirectMatch 301 (?i)utahgeo/hazards/eqfault/eqfault.htm https://geology.utah.gov/?page_id=5797
+RedirectMatch 301 (?i)utahgeo/hazards/eqfault/index.htm https://geology.utah.gov/?page_id=5825
+RedirectMatch 301 (?i)utahgeo/rockmineral/index.htm https://geology.utah.gov/?page_id=5830
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/springhill/index.htm https://geology.utah.gov/?page_id=653
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/rockville21/index.htm https://geology.utah.gov/?page_id=6531
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/provorock49/index.htm https://geology.utah.gov/?page_id=6532
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/creekside5-6/creekside_pg2.htm https://geology.utah.gov/?page_id=6535
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/creekside5-6/creekside_pg3.htm https://geology.utah.gov/?page_id=6535
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/creekside5-6/creekside_pg4.htm https://geology.utah.gov/?page_id=6535
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/creekside5-6/creekside_pg5.htm https://geology.utah.gov/?page_id=6535
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/creekside5-6/creekside_pg6.htm https://geology.utah.gov/?page_id=6535
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/creekside5-6/index.htm https://geology.utah.gov/?page_id=6535
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/early29.htm https://geology.utah.gov/?page_id=6535
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/sunset46/index.htm https://geology.utah.gov/?page_id=6536
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/sweber46/index.htm https://geology.utah.gov/?page_id=6537
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/provorock55/index.htm https://geology.utah.gov/?page_id=6538
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/cedarhills45/index.htm https://geology.utah.gov/?page_id=6539
+RedirectMatch 301 (?i)utahgeo/hazards/haz_assist/hazinfo.htm https://geology.utah.gov/?page_id=6594
+RedirectMatch 301 (?i)utahgeo/hazards/haz_assist/index.htm https://geology.utah.gov/?page_id=6594
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/kanabcreek35/index.htm https://geology.utah.gov/?page_id=6540
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/sweber25/index.htm https://geology.utah.gov/?page_id=6541
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/flows74/flow74.htm https://geology.utah.gov/?page_id=6542
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/citycreek24.htm https://geology.utah.gov/?page_id=6543
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/farmington464.htm https://geology.utah.gov/?page_id=6544
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/morgan3224.htm https://geology.utah.gov/?page_id=6545
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/flows92.htm https://geology.utah.gov/?page_id=6546
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/flows92ph1.htm https://geology.utah.gov/?page_id=6546
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/flows92ph2.htm https://geology.utah.gov/?page_id=6546
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/springhill/update.htm https://geology.utah.gov/?page_id=6549
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/springhill/ugs_activities.htm https://geology.utah.gov/?page_id=655
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/springhill/past_summary.htm https://geology.utah.gov/?page_id=6551
+RedirectMatch 301 (?i)utahgeo/rockmineral/newminerals/index.htm https://geology.utah.gov/?page_id=6647
+RedirectMatch 301 (?i)utahgeo/rockmineral/newminerals/newmin3.htm https://geology.utah.gov/?page_id=6653
+RedirectMatch 301 (?i)utahgeo/rockmineral/newminerals/newmin2.htm https://geology.utah.gov/?page_id=6654
+RedirectMatch 301 (?i)utahgeo/rockmineral/newminerals/newmin1.htm https://geology.utah.gov/?page_id=6655
+RedirectMatch 301 (?i)utahgeo/gsl/lakedivided.htm https://geology.utah.gov/?page_id=6663
+RedirectMatch 301 (?i)utahgeo/gsl/lakedivided2.htm https://geology.utah.gov/?page_id=6663
+RedirectMatch 301 (?i)utahgeo/gsl/lakedivided3.htm https://geology.utah.gov/?page_id=6663
+RedirectMatch 301 (?i)utahgeo/geo/volcanoes/volcano_type.htm https://geology.utah.gov/?page_id=6670
+RedirectMatch 301 (?i)utahgeo/dinofossil/iceage/icewildlife.htm https://geology.utah.gov/?page_id=6672
+RedirectMatch 301 (?i)utahgeo/dinofossil/iceage/icewildlife2.htm https://geology.utah.gov/?page_id=6672
+RedirectMatch 301 (?i)utahgeo/dinofossil/iceage/icewildlife3.htm https://geology.utah.gov/?page_id=6672
+RedirectMatch 301 (?i)utahgeo/dinofossil/iceage/tuskdiscovery.htm https://geology.utah.gov/?page_id=6675
+RedirectMatch 301 (?i)utahgeo/dinofossil/iceage/iceage.htm https://geology.utah.gov/?page_id=6677
+RedirectMatch 301 (?i)utahgeo/hazards/landslide/index.htm https://geology.utah.gov/?page_id=5265
+RedirectMatch 301 (?i)utahgeo/dinofossil/index.htm https://geology.utah.gov/?page_id=5294
+RedirectMatch 301 (?i)utahgeo/hazards/eqfault/wfault_exposed.htm https://geology.utah.gov/?page_id=5310#toggle-id-3
+RedirectMatch 301 (?i)utahgeo/hazards/eqfault/wfault_flyby.htm https://geology.utah.gov/?page_id=5310#toggle-id-4
+RedirectMatch 301 (?i)utahgeo/rockmineral/collecting/obsidn.htm https://geology.utah.gov/?page_id=13064
+RedirectMatch 301 (?i)databases/lidar/lidar.htm https://geology.utah.gov/?p=19956
+
+RedirectMatch 301 (?i)/teacher/tc/tc18.htm https://geology.utah.gov/?page_id=11776
+Redirect 301 /databases/imagery/ https://geodata.geology.utah.gov/imagery/
+Redirect 301 /databases/index.htm/ https://geology.utah.gov/?page_id=5145
+Redirect 301 /databases/umsh/ https://geology.utah.gov/?page_id=19461
+#Redirect 301 /databases/ https://geology.utah.gov/?page_id=5145
+Redirect 301 /emp/energydata/coaldata.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/energydata/electricitydata.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/energydata/ghgdata.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/energydata/hcdegreedata.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/energydata/index.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/energydata/mineralsdata.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/energydata/natgasdata.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/energydata/oildata.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/energydata/overviewdata.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/energydata/renewenergydata.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/energydata/saappendix.htm https://geology.utah.gov/?page_id=11858
+Redirect 301 /emp/shalegas/cret_shalegas/index.htm https://geology.utah.gov/?page_id=6320
+Redirect 301 /geo_guides/c_wasatch/bigcottonwood.htm https://geology.utah.gov/?page_id=13181
+Redirect 301 /geo_guides/c_wasatch/littlecottonwood.htm https://geology.utah.gov/?page_id=13181
+Redirect 301 /geo_guides/c_wasatch/citycreek.htm https://geology.utah.gov/?page_id=13183
+Redirect 301 /geo_guides/c_wasatch/emigration.htm https://geology.utah.gov/?page_id=13185
+Redirect 301 /geo_guides/c_wasatch/millcreek.htm https://geology.utah.gov/?page_id=13189
+Redirect 301 /teacher/tc/tc17.htm https://geology.utah.gov/?page_id=11948
+Redirect 301 /teacher/tc/tc57.htm https://geology.utah.gov/?page_id=11948
+Redirect 301 /teacher/tc/tc96.htm https://geology.utah.gov/?page_id=12150
+Redirect 301 /teacher/tc/stonewall36-1.htm https://geology.utah.gov/?page_id=12264
+Redirect 301 /teacher/tc/settling34-1.htm https://geology.utah.gov/?page_id=12487
+Redirect 301 /teacher/tc/tc56.htm https://geology.utah.gov/?page_id=12650
+Redirect 301 /teacher/tc/tc399.htm https://geology.utah.gov/?page_id=12922
+Redirect 301 /online_html/pi/pi-66/index.htm https://geology.utah.gov/?page_id=13242
+Redirect 301 /online_html/pi/pi-66/pi66pg1.htm https://geology.utah.gov/?page_id=13242
+Redirect 301 /online_html/pi/pi-66/pi66pg2.htm https://geology.utah.gov/?page_id=13242
+Redirect 301 /online_html/pi/pi-66/pi66pg3.htm https://geology.utah.gov/?page_id=13242
+Redirect 301 /online_html/pi/pi-66/pi66pg4.htm https://geology.utah.gov/?page_id=13242
+Redirect 301 /online_html/pi/pi-66/pi66pg5.htm https://geology.utah.gov/?page_id=13242
+Redirect 301 /online_html/pi/pi-66/pi66pg6.htm https://geology.utah.gov/?page_id=13242
+Redirect 301 /online_html/pi/pi-66/pi66pg7.htm https://geology.utah.gov/?page_id=13242
+Redirect 301 /online_html/pi/pi-66/pi66pg8.htm https://geology.utah.gov/?page_id=13242
+Redirect 301 /online_html/pi/pi-7/debrisflow.htm https://geology.utah.gov/?page_id=13244
+Redirect 301 /online_html/pi/pi-7/debrisrisk.htm https://geology.utah.gov/?page_id=13244
+Redirect 301 /emp/geothermal/references.htm https://geology.utah.gov/?page_id=13960
+Redirect 301 /surveynotes/gladasked/gladage.htm https://geology.utah.gov/?page_id=14046
+Redirect 301 /emp/bluebell/index.htm https://geology.utah.gov/?page_id=1744
+Redirect 301 /ghp/consultants/geohaz_websites.htm https://geology.utah.gov/?page_id=1828
+Redirect 301 /online_html/wrb/wrb-29/abstractwrb29.htm https://geology.utah.gov/?page_id=19680
+Redirect 301 /online_html/wrb/wrb-29/wrb29plates.htm https://geology.utah.gov/?page_id=19680
+Redirect 301 /surveynotes/gladasked/gladmeteorites.htm https://geology.utah.gov/?page_id=4911
+Redirect 301 /surveynotes/gladasked/gladrockwall.htm https://geology.utah.gov/?page_id=4929
+Redirect 301 /surveynotes/gladasked/gladrockwall2.htm https://geology.utah.gov/?page_id=4929
+Redirect 301 /surveynotes/gladasked/gladrockwall3.htm https://geology.utah.gov/?page_id=4929
+Redirect 301 /surveynotes/gladasked/gladrocks.htm https://geology.utah.gov/?page_id=4935
+Redirect 301 /surveynotes../gladasked/gladrocks.htm https://geology.utah.gov/?page_id=4935
+Redirect 301 /surveynotes/gladasked/gladgravel.htm https://geology.utah.gov/?page_id=4938
+Redirect 301 /surveynotes/gladasked/gladspecimen.htm https://geology.utah.gov/?page_id=4944
+Redirect 301 /surveynotes/gladasked/gladindentify.htm https://geology.utah.gov/?page_id=4946
+Redirect 301 /surveynotes/gladasked/gladberyl.htm https://geology.utah.gov/?page_id=4950
+Redirect 301 /surveynotes/gladasked/gladminused.htm https://geology.utah.gov/?page_id=4952
+Redirect 301 /surveynotes/gladasked/gladcoll.htm https://geology.utah.gov/?page_id=4954
+Redirect 301 /surveynotes/gladasked/gladstak.htm https://geology.utah.gov/?page_id=4956
+Redirect 301 /surveynotes/gladasked/gladgeobotany.htm https://geology.utah.gov/?page_id=4958
+Redirect 301 /surveynotes/gladasked/gladfulgurites.htm https://geology.utah.gov/?page_id=4960
+Redirect 301 /surveynotes/gladasked/gladformation.htm https://geology.utah.gov/?page_id=4962
+Redirect 301 /surveynotes/gladasked/gladfault_address.htm https://geology.utah.gov/?page_id=4969
+Redirect 301 /surveynotes/gladasked/gladmeteorite_id.htm https://geology.utah.gov/?page_id=4907
+Redirect 301 /surveynotes/gladasked/gladseismicsurveys.htm https://geology.utah.gov/?page_id=4971
+Redirect 301 /surveynotes/gladasked/gladcall.htm https://geology.utah.gov/?page_id=4973
+Redirect 301 /surveynotes/gladasked/gladgsl_islands.htm https://geology.utah.gov/?page_id=4977
+Redirect 301 /surveynotes/gladasked/gladgsltrivia.htm https://geology.utah.gov/?page_id=4979
+Redirect 301 /surveynotes/gladasked/gladfoam.htm https://geology.utah.gov/?page_id=4981
+Redirect 301 /surveynotes/gladasked/gladsprg.htm https://geology.utah.gov/?page_id=4992
+Redirect 301 /map-pub/publications/aerial-photographs/ http://wp.me/P5HpmR-1l1
+
+Redirect 301 /maps_pubs.htm https://geology.utah.gov/?page_id=4998
+#Redirect 301 /maps/geomap https://geology.utah.gov/?page_id=5101
+Redirect 301 /maps/grwatermap/index.htm https://geology.utah.gov/?page_id=5111
+Redirect 301 /maps/topomap/index.htm https://geology.utah.gov/?page_id=5119
+#Redirect 301 /maps/topomap/topomaps.html https://geology.utah.gov/?page_id=5119
+Redirect 301 /maps/gis/index.htm https://geology.utah.gov/?page_id=5127
+Redirect 301 /maps/georesmap/index.htm https://geology.utah.gov/?page_id=5129
+Redirect 301 /maps/geophysmap/index.htm https://geology.utah.gov/?page_id=5131
+Redirect 301 /maps/geohazmap/ https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/beaver.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/boxelder.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/cache.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/carbon.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/daggett.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/davis.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/duchesne.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/emery.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/garfield.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/grand.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/index.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/iron.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/juab.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/kane.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/landslide3x6.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/millard.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/morgan.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/ofr-318.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/piute.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/rich.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/saltlake.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/sanjuan.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/sanpete.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/sevier.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/summit.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/tooele.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/uintah.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/utah.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/wasatch.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/washington.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/wayne.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /maps/geohazmap/weber.htm https://geology.utah.gov/?page_id=5104
+Redirect 301 /whatsnew/newpubs.htm https://geology.utah.gov/?page_id=514
+Redirect 301 /online/index.htm https://geology.utah.gov/?page_id=5142
+Redirect 301 /online/aerial_photos/index.htm https://geology.utah.gov/?page_id=5147
+Redirect 301 /surveynotes/energy_news/index.htm https://geology.utah.gov/?page_id=5153
+Redirect 301 /surveynotes/svntsarchive.htm https://geology.utah.gov/?page_id=5156
+Redirect 301 /surveynotes/quarterly_review/index.htm https://geology.utah.gov/?page_id=5158
+Redirect 301 /emp/oilshale/index.htm https://geology.utah.gov/?page_id=5178
+Redirect 301 /emp/geothermal/index.htm https://geology.utah.gov/?page_id=5185
+Redirect 301 /emp/co2sequest/index.htm https://geology.utah.gov/?page_id=5188
+Redirect 301 /emp/tarsand/index.htm https://geology.utah.gov/?page_id=5192
+Redirect 301 /esp/wetlands/index.htm https://geology.utah.gov/?page_id=5224
+Redirect 301 /emp/corecenter/index.htm https://geology.utah.gov/?page_id=523
+Redirect 301 /online/analytical_data.htm https://geology.utah.gov/?page_id=5234
+Redirect 301 /ghp/consultants/pubs/beaver.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/boxelder.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/cache.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/carbon.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/daggett.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/davis.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/duchesne.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/emery.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/garfield.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/grand.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/index.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/iron.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/juab.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/kane.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/millard.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/morgan.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/piute.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/rich.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/saltlake.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/sanjuan.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/sanpete.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/sevier.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/summit.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/tooele.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/uintah.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/utah.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/wasatch.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/washington.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/wayne.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/pubs/weber.htm https://geology.utah.gov/?page_id=5275
+Redirect 301 /ghp/consultants/site-specific/beaver.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/boxelder.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/cache.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/carbon.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/daggett.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/davis.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/duchesne.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/emery.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/garfield.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/grand.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/index.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/iron.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/juab.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/kane.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/millard.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/morgan.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/rich.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/saltlake.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/sanjuan.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/sanpete.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/sevier.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/summit.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/tooele.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/uintah.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/utah.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/wasatch.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/washington.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/wayne.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/site-specific/weber.htm https://geology.utah.gov/?page_id=5278
+Redirect 301 /ghp/consultants/paleoseismic_series.htm https://geology.utah.gov/?page_id=5283
+Redirect 301 /online_html/pi/pi-58/index.htm https://geology.utah.gov/?page_id=5289
+Redirect 301 /online_html/pi/pi-58/pi58pg1.htm https://geology.utah.gov/?page_id=5289
+Redirect 301 /online_html/pi/pi-58/pi58pg2.htm https://geology.utah.gov/?page_id=5289
+Redirect 301 /online_html/pi/pi-58/pi58pg3.htm https://geology.utah.gov/?page_id=5289
+Redirect 301 /online_html/pi/pi-58/pi58pg4.htm https://geology.utah.gov/?page_id=5289
+Redirect 301 /online_html/pi/pi-58/pi58pg5.htm https://geology.utah.gov/?page_id=5289
+Redirect 301 /multimedia/blackrock_geothermal_drilling_video.htm https://geology.utah.gov/?page_id=531
+Redirect 301 /multimedia/doellings_bowl_video.htm https://geology.utah.gov/?page_id=531
+Redirect 301 /multimedia/index.htm https://geology.utah.gov/?page_id=531
+Redirect 301 /multimedia/north_creek_trench_video.htm https://geology.utah.gov/?page_id=531
+Redirect 301 /teacher/index.htm https://geology.utah.gov/?page_id=5312
+Redirect 301 /teacher/teachkits.htm https://geology.utah.gov/?page_id=5316
+Redirect 301 /teacher/workshops.htm https://geology.utah.gov/?page_id=5318
+Redirect 301 /teacher/esweek.htm https://geology.utah.gov/?page_id=532
+Redirect 301 /teacher/tc/index.htm https://geology.utah.gov/?page_id=5322
+Redirect 301 /teacher/teacher_resources.htm https://geology.utah.gov/?page_id=5322
+Redirect 301 /aboutUGS.htm https://geology.utah.gov/?page_id=17440
+Redirect 301 /phonebk.htm https://geology.utah.gov/?page_id=5326
+Redirect 301 /ugssuro.htm https://geology.utah.gov/?page_id=5336
+Redirect 301 /ugsboard/index.htm https://geology.utah.gov/?page_id=5338
+Redirect 301 /geo_guides/index.htm https://geology.utah.gov/?page_id=534
+Redirect 301 /geoprog.htm https://geology.utah.gov/?page_id=534
+Redirect 301 /ugsproj.htm https://geology.utah.gov/?page_id=534
+Redirect 301 /online/ugs_publication_series.htm https://geology.utah.gov/?page_id=5344
+Redirect 301 /whatsnew/news/archives/index.htm https://geology.utah.gov/blog
+Redirect 301 /about-us/recent-news/ https://geology.utah.gov/blog
+Redirect 301 /surveynotes/index.htm https://geology.utah.gov/?page_id=5004
+Redirect 301 /surveynotes/gladasked/gladscaperock.htm https://geology.utah.gov/?page_id=5307
+Redirect 301 /surveynotes/gladasked/gladfossil_collecting.htm https://geology.utah.gov/?page_id=5413
+Redirect 301 /surveynotes/gladasked/trilobites.htm https://geology.utah.gov/?page_id=5417
+Redirect 301 /surveynotes/gladasked/gladkink.htm https://geology.utah.gov/?page_id=5419
+Redirect 301 /surveynotes/gladasked/stsymbol.htm https://geology.utah.gov/?page_id=5421
+Redirect 301 /surveynotes/gladasked/gladtopo.htm https://geology.utah.gov/?page_id=5423
+Redirect 301 /surveynotes/gladasked/gladmtn_lines.htm https://geology.utah.gov/?page_id=5431
+Redirect 301 /surveynotes/gladasked/gladriver.htm https://geology.utah.gov/?page_id=5433
+Redirect 301 /surveynotes/gladasked/gladpotholes.htm https://geology.utah.gov/?page_id=5435
+Redirect 301 /surveynotes/gladasked/gladtopoform.htm https://geology.utah.gov/?page_id=5437
+Redirect 301 /surveynotes/gladasked/gladname_mountain.htm https://geology.utah.gov/?page_id=5439
+Redirect 301 /surveynotes/gladasked/gladgnis_names.htm https://geology.utah.gov/?page_id=5441
+Redirect 301 /surveynotes/gladasked/gladuinta_names.htm https://geology.utah.gov/?page_id=5443
+Redirect 301 /surveynotes/gladasked/gladice_ages.htm https://geology.utah.gov/maps-publications/survey-notes/glad-you-asked/ice-ages-what-are-they-and-what-causes-them/
+Redirect 301 /surveynotes/gladasked/gladslickensides.htm https://geology.utah.gov/?page_id=5447
+Redirect 301 /surveynotes/gladasked/gladglaciers.htm https://geology.utah.gov/?page_id=5449
+Redirect 301 /surveynotes/gladasked/gladsoil.htm https://geology.utah.gov/?page_id=5451
+Redirect 301 /surveynotes/gladasked/gladcrusts.htm https://geology.utah.gov/?page_id=5453
+Redirect 301 /surveynotes/gladasked/gladhydr.htm https://geology.utah.gov/?page_id=5409
+Redirect 301 /surveynotes/geosights/bonneville_salt_flats.htm https://geology.utah.gov/?page_id=5475
+Redirect 301 /surveynotes/geosights/devilsslide.htm https://geology.utah.gov/?page_id=5467
+Redirect 301 /surveynotes/geosights/stgeorge_dino_discovery.htm https://geology.utah.gov/?page_id=5544
+Redirect 301 /surveynotes/geosights/little_sahara.htm https://geology.utah.gov/?page_id=5490
+Redirect 301 /surveynotes/geosights/rozeljetty_revisited.htm https://geology.utah.gov/?page_id=5457
+Redirect 301 /surveynotes/geosights/sandmountain.htm https://geology.utah.gov/?page_id=5546
+Redirect 301 /surveynotes/geosights/thistle.htm https://geology.utah.gov/?page_id=5481
+Redirect 301 /surveynotes/geosights/devils_playground.htm https://geology.utah.gov/?page_id=5459
+Redirect 301 /surveynotes/geosights/spiraljetty.htm https://geology.utah.gov/?page_id=5463
+Redirect 301 /surveynotes/geosights/coal_clinker.htm https://geology.utah.gov/?page_id=5465
+Redirect 301 /surveynotes/geosights/cottonwood_canyons.htm https://geology.utah.gov/?page_id=5469
+Redirect 301 /surveynotes/geosights/gilbertpark.htm https://geology.utah.gov/?page_id=5471
+Redirect 301 /surveynotes/geosights/the_witches.htm https://geology.utah.gov/?page_id=5473
+Redirect 301 /surveynotes/geosights/stocktonbar.htm https://geology.utah.gov/?page_id=5477
+Redirect 301 /surveynotes/geosights/fantasy_canyon.htm https://geology.utah.gov/?page_id=5479
+Redirect 301 /surveynotes/geosights/cascadesprings.htm https://geology.utah.gov/?page_id=5483
+Redirect 301 /surveynotes/geosights/hotpots.htm https://geology.utah.gov/?page_id=5485
+Redirect 301 /surveynotes/geosights/honeycombs.htm https://geology.utah.gov/?page_id=5487
+Redirect 301 /surveynotes/geosights/devils_kitchen.htm https://geology.utah.gov/?page_id=5492
+Redirect 301 /surveynotes/geosights/woodpile.htm https://geology.utah.gov/?page_id=5499
+Redirect 301 /surveynotes/geosights/pahvantbutte.htm https://geology.utah.gov/?page_id=5511
+Redirect 301 /surveynotes/geosights/wedge_overlook.htm https://geology.utah.gov/?page_id=5513
+Redirect 301 /surveynotes/geosights/wall_arch.htm https://geology.utah.gov/?page_id=5517
+Redirect 301 /surveynotes/geosights/onion_creek.htm https://geology.utah.gov/?page_id=5519
+Redirect 301 /surveynotes/geosights/fishertowers.htm https://geology.utah.gov/?page_id=5521
+Redirect 301 /surveynotes/geosights/goosenecks.htm https://geology.utah.gov/?page_id=5523
+Redirect 301 /surveynotes/geosights/upheaval_dome.htm https://geology.utah.gov/?page_id=5530
+Redirect 301 /surveynotes/geosights/cascade_falls.htm https://geology.utah.gov/?page_id=5536
+Redirect 301 /surveynotes/geosights/candymtn.htm https://geology.utah.gov/?page_id=5538
+Redirect 301 /surveynotes/geosights/fremont_state_park.htm https://geology.utah.gov/?page_id=5540
+Redirect 301 /surveynotes/geosights/castlerock.htm https://geology.utah.gov/?page_id=5542
+Redirect 301 /surveynotes/geosights/invertedtopo.htm https://geology.utah.gov/?page_id=5550
+Redirect 301 /surveynotes/geosights/cathedralvalley.htm https://geology.utah.gov/?page_id=5532
+Redirect 301 /geo_guides/st_george/index.htm https://geology.utah.gov/?page_id=5552
+Redirect 301 /maps/geomap/index.htm https://geology.utah.gov/?page_id=5101
+Redirect 301 /maps/geomap/statemap/index.htm https://geology.utah.gov/?page_id=5843
+Redirect 301 /maps/geomap/7_5/7-5geologic_maps_table.htm https://geology.utah.gov/?page_id=5966
+Redirect 301 /maps/geomap/7_5/index.htm https://geology.utah.gov/?page_id=5966
+Redirect 301 /maps/geomap/3x6/index.htm https://geology.utah.gov/?page_id=5967
+Redirect 301 /maps/geomap/1x2/index.htm https://geology.utah.gov/?page_id=5968
+Redirect 301 /maps/geomap/non_quad/index.htm https://geology.utah.gov/?page_id=5969
+Redirect 301 /maps/geomap/parkmaps/index.htm https://geology.utah.gov/?page_id=597
+Redirect 301 /maps/geomap/postcards/index.htm https://geology.utah.gov/?page_id=5971
+Redirect 301 /maps/index.htm https://geology.utah.gov/?page_id=599
+Redirect 301 /emp/shale_oil/index.htm https://geology.utah.gov/?page_id=6312
+Redirect 301 /emp/tightgas/index.htm https://geology.utah.gov/?page_id=6314
+Redirect 301 /emp/shalegas/index.htm https://geology.utah.gov/?page_id=6316
+Redirect 301 /emp/leadville/index.htm https://geology.utah.gov/?page_id=6322
+Redirect 301 /emp/pump/index.htm https://geology.utah.gov/?page_id=6324
+Redirect 301 /emp/paradox2/index.htm https://geology.utah.gov/?page_id=6328
+Redirect 301 /emp/greenriver/index.htm https://geology.utah.gov/?page_id=6334
+Redirect 301 /emp/ferron/index.htm https://geology.utah.gov/?page_id=6338
+Redirect 301 /emp/paradox/index.htm https://geology.utah.gov/?page_id=6356
+Redirect 301 /emp/UBproduced_water/index.htm https://geology.utah.gov/?page_id=6364
+Redirect 301 /emp/UBwater_study/index.htm https://geology.utah.gov/?page_id=6366
+Redirect 301 /utahgeo/energy/fossil_fuels.htm https://geology.utah.gov/?page_id=6307
+Redirect 301 /emp/geothermal/nature_of_geothermal_energy.htm https://geology.utah.gov/?page_id=6411
+Redirect 301 /emp/geothermal/geothermal_resources_in_us.htm https://geology.utah.gov/?page_id=6412
+Redirect 301 /emp/geothermal/geothermal_resources_in_utah.htm https://geology.utah.gov/?page_id=6413
+Redirect 301 /emp/geothermal/geologic_setting.htm https://geology.utah.gov/?page_id=6414
+#Redirect 301 /geothermal/ngds/ https://geology.utah.gov/?page_id=6415
+Redirect 301 /geothermal/ngds/index.htm https://geology.utah.gov/?page_id=6415
+Redirect 301 /emp/geothermal/ugwg/geothermal48/index.htm https://geology.utah.gov/?page_id=6416
+Redirect 301 /emp/geothermal/ugwg/index.htm https://geology.utah.gov/?page_id=6416
+Redirect 301 /emp/geothermal/regulations.htm https://geology.utah.gov/?page_id=6417
+Redirect 301 /emp/mercury/index.htm https://geology.utah.gov/?page_id=643
+Redirect 301 /emp/geothermal/physiography_utah.htm https://geology.utah.gov/?page_id=6436
+Redirect 301 /emp/geothermal/late_cenozoic_tectonics.htm https://geology.utah.gov/?page_id=6437
+Redirect 301 /emp/geothermal/quaternary_faults.htm https://geology.utah.gov/?page_id=6438
+Redirect 301 /emp/geothermal/quaternary_volcanic_rocks.htm https://geology.utah.gov/?page_id=6439
+Redirect 301 /emp/co2sequest/background.htm https://geology.utah.gov/?page_id=6452
+Redirect 301 /emp/co2sequest/abstract.htm https://geology.utah.gov/?page_id=6453
+Redirect 301 /emp/co2sequest/overview.htm https://geology.utah.gov/?page_id=6454
+Redirect 301 /emp/research/solicitation/index.htm https://geology.utah.gov/?page_id=6458
+Redirect 301 /esp/ground_water/pubs/gw_resources.htm https://geology.utah.gov/?page_id=646
+Redirect 301 /esp/ground_water/pubs/recharge.htm https://geology.utah.gov/?page_id=6461
+Redirect 301 /esp/ground_water/pubs/pesticide.htm https://geology.utah.gov/?page_id=6462
+Redirect 301 /esp/ground_water/pubs/water_quality.htm https://geology.utah.gov/?page_id=6463
+Redirect 301 /esp/ground_water/pubs/wastewater.htm https://geology.utah.gov/?page_id=6464
+Redirect 301 /emp/coalbed_gas/index.htm https://geology.utah.gov/?page_id=647
+Redirect 301 /esp/ground_water/pubs/wetlands.htm https://geology.utah.gov/?page_id=6477
+Redirect 301 /esp/wetlands/uwic/wetland_mapping_data.htm https://geology.utah.gov/?page_id=6481
+Redirect 301 /esp/wetlands/uwic/wetland_assessment.htm https://geology.utah.gov/?page_id=6482
+Redirect 301 /esp/wetlands/uwic/wetland_education.htm https://geology.utah.gov/?page_id=6483
+Redirect 301 /esp/wetlands/uwic/wetland_additional.htm https://geology.utah.gov/?page_id=6484
+Redirect 301 /emp/corecenter/feeschedule.htm https://geology.utah.gov/?page_id=6489
+Redirect 301 /emp/corecenter/coretrust.htm https://geology.utah.gov/?page_id=6490
+Redirect 301 /ghp/workgroups/index.htm https://geology.utah.gov/?page_id=6497
+Redirect 301 /ghp/workgroups/uqfpwg.htm https://geology.utah.gov/?page_id=6499
+Redirect 301 /ghp/workgroups/ulag.htm https://geology.utah.gov/?page_id=65
+Redirect 301 /ghp/workgroups/gswg.htm https://geology.utah.gov/?page_id=651
+Redirect 301 /ghp/workgroups/wguep.htm https://geology.utah.gov/?page_id=652
+Redirect 301 /ghp/workgroups/brpewg.htm https://geology.utah.gov/?page_id=653
+Redirect 301 /ghp/workgroups/brpshs.htm https://geology.utah.gov/?page_id=6504
+Redirect 301 /teacher/geneduc.htm https://geology.utah.gov/?page_id=6581
+Redirect 301 /ghp/index.htm https://geology.utah.gov/?page_id=6583
+Redirect 301 /emp/index.htm https://geology.utah.gov/?page_id=6584
+Redirect 301 /giop/index.htm https://geology.utah.gov/?page_id=6585
+Redirect 301 /gmp/index.htm https://geology.utah.gov/?page_id=6586
+Redirect 301 /esp/index.htm https://geology.utah.gov/?page_id=6587
+Redirect 301 /ghp/school-site_review/index.htm https://geology.utah.gov/?page_id=6594#tab-id-4
+Redirect 301 /ghp/geohaz_workgroup/index.htm https://geology.utah.gov/?page_id=6598
+Redirect 301 /teacher/tc/tc599.htm https://geology.utah.gov/?page_id=6617
+Redirect 301 /teacher/tc/tc0107.htm https://geology.utah.gov/?page_id=11904
+Redirect 301 /teacher/tc/tc0399.htm https://geology.utah.gov/?page_id=12922
+Redirect 301 /teacher/tc/tc0506.htm https://geology.utah.gov/?page_id=12065
+Redirect 301 /teacher/tc/tc0906.htm https://geology.utah.gov/?page_id=12105
+Redirect 301 /teacher/tc/tc198.htm https://geology.utah.gov/?page_id=6619
+Redirect 301 /teacher/tc/tc12-96.htm https://geology.utah.gov/?page_id=6620
+Redirect 301 /teacher/tc/tcnov94.htm https://geology.utah.gov/?page_id=6621
+Redirect 301 /online_html/pi/pi-5/index.htm https://geology.utah.gov/?page_id=6635
+Redirect 301 /online_html/pi/pi-5/pi5hist.htm https://geology.utah.gov/?page_id=6637
+Redirect 301 /online_html/pi/pi-5/pi5map1.htm https://geology.utah.gov/?page_id=6637
+Redirect 301 /online_html/pi/pi-5/pi5map2.htm https://geology.utah.gov/?page_id=6638
+Redirect 301 /online_html/pi/pi-5/pi5plac.htm https://geology.utah.gov/?page_id=6638
+Redirect 301 /online_html/pi/pi-5/pi5pyrt.htm https://geology.utah.gov/?page_id=6639
+Redirect 301 /esp/hydro/h2oprog.htm https://geology.utah.gov/?page_id=6640
+Redirect 301 /online_html/pi/pi-5/pi5regs.htm https://geology.utah.gov/?page_id=6640
+Redirect 301 /online_html/pi/pi-5/pi5info.htm https://geology.utah.gov/?page_id=6641
+#Redirect 301 /esp/paleo/paleovol.htm https://geology.utah.gov/?page_id=6650
+Redirect 301 /esp/paleo/paleo_permit.htm https://geology.utah.gov/?page_id=6660
+Redirect 301 /ghp/consultants/index.htm https://geology.utah.gov/?page_id=6794
+Redirect 301 /ghp/consultants/rpt_guidelines.htm https://geology.utah.gov/?page_id=6796
+Redirect 301 /ghp/consultants/outside_pubs.htm https://geology.utah.gov/?page_id=6797
+Redirect 301 /ghp/consultants/geophysical_data/index.htm https://geology.utah.gov/?page_id=6798
+Redirect 301 /ghp/consultants/geophysical_data/cvm.htm https://geology.utah.gov/?page_id=682
+Redirect 301 /ghp/consultants/geophysical_data/shear-wave_velocity.htm https://geology.utah.gov/?page_id=683
+Redirect 301 /ghp/consultants/geophysical_data/deep-basin_structure.htm https://geology.utah.gov/?page_id=684
+Redirect 301 /online/aerial_photos/aerial_compilations.htm https://geology.utah.gov/?page_id=687
+Redirect 301 /online/aerial_photos/aerial_db_images.htm https://geology.utah.gov/?page_id=6872
+Redirect 301 /online/aerial_photos/aerial_comparison.htm https://geology.utah.gov/?page_id=6878
+Redirect 301 /emp/research/funded_projects5.htm https://geology.utah.gov/geologic-resources/energy/energy-mineral-research
+Redirect 301 /emp/research/funded_projects6.htm https://geology.utah.gov/?page_id=5194
+Redirect 301 /emp/research/index.htm https://geology.utah.gov/?page_id=5194
+Redirect 301 /esp/snake_valley_project/overview.htm https://geology.utah.gov/?page_id=13160
+Redirect 301 /ghp/geohazrd.htm https://geology.utah.gov/?page_id=6594
+Redirect 301 /surveynotes/gladasked/index.htm https://geology.utah.gov/?page_id=5011
+Redirect 301 /online_html/pi/pi-39/index.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg01.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg02.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg03.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg04.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg05.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg06.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg07.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg08.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg01.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg11.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg12.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg13.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg14.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg15.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /online_html/pi/pi-39/pi39pg9.htm https://geology.utah.gov/?page_id=6666
+Redirect 301 /maps/geomap/UTDigitalGeoMap/geomap/index.html https://geology.utah.gov/apps/intgeomap/
+Redirect 301 /ugsjobs.htm http://statejobs.utah.gov/
+Redirect 301 /emp/geothermal/wells_springs_database.htm https://geology.utah.gov/?page_id=6429
+Redirect 301 /online_html/pi/pi-50/pi50pyrt.htm https://geology.utah.gov/?page_id=6639
+Redirect 301 /teacher/tc/tc0108.htm https://geology.utah.gov/?page_id=11776
+Redirect 301 /utahgeo/rockmineral/collecting/rkhd0500.htm https://geology.utah.gov/?page_id=11955
+Redirect 301 /webmap/reportviewer/ /apps/reportviewer/
+Redirect 301 /emp/ucrc/index.html https://geology.utah.gov/?page_id=5230
+Redirect 301 /databases/UMOS https://geology.utah.gov/?page_id=5240
+Redirect 301 /databases/umsh https://geology.utah.gov/?page_id=19461
+Redirect 301 /maps/geomap/interactive/viewer/ https://geology.utah.gov/apps/intgeomap/
+Redirect 301 /surveynotes/geosights/index.htm https://geology.utah.gov/apps/geosights/
+Redirect 301 /tour_maps/fossil_guide/ https://geology.utah.gov/apps/fossil_guide/
+Redirect 301 /tour_maps/slc_bldg_stone_tour/index.html https://geology.utah.gov/apps/slc_bldg_stone_tour/
+Redirect 301 /tour_maps/slc_bldg_stone_tour/pages/pi60pg3.htm https://geology.utah.gov/?page_id=5567
+Redirect 301 /tour_maps/landscape_rock/ https://geology.utah.gov/apps/landscape_rock/
+Redirect 301 /tour_maps/rock_collecting/ https://geology.utah.gov/apps/rock_collecting/
+Redirect 301 /databases/index.htm https://geology.utah.gov/?page_id=5145
+Redirect 301 /resources/energy/geothermal/geologic-setting-in-utah/quaternary-faults-in-utah/ http://wp.me/P5HpmR-5M4
+Redirect 301 /geo_guides/st_george/ https://geology.utah.gov/?page_id=24941
+Redirect 301 /popular/places-to-go/geologic-guides/st-george-30-x-6…rtual-field-trip/ https://geology.utah.gov/?page_id=24941
+Redirect 301 /?page_id=5552 https://geology.utah.gov/?page_id=24941
+Redirect 301 /emp/energydata http://wp.me/P5HpmR-1lr
+Redirect 301 /resources/data-databases/qfaults/ https://geology.utah.gov/apps/qfaults/index.html
+Redirect 301 /resources/data-databases/ucrc-inventory/ https://geology.utah.gov/apps/rockcore/index.html
+
+#Redirect 301 /teachers-2 https://wp.me/P5HpmR-1nG
+RedirectMatch 301 ^/hazards/earthquakes-faults/?$ https://geology.utah.gov/?page_id=5260
+Redirect 301 /hazards/earthquakes-faults/liquefaction/ https://geology.utah.gov/?page_id=5262
+Redirect 301 /hazards/earthquakes-faults/utah-faults/ https://geology.utah.gov/?page_id=5825
+Redirect 301 /resources/data-databases/landslide-history/ https://geology.utah.gov/?page_id=5265
+RedirectMatch 301 ^/hazards/landslides-rockfalls/?$ https://geology.utah.gov/?page_id=5265
+Redirect 301 /hazards/landslides-rockfalls/spring-creek-road-landslide/ https://geology.utah.gov/?page_id=31778
+Redirect 301 /hazards/landslides-rockfalls/parkway_drive_landslide/ https://geology.utah.gov/?page_id=17991
+Redirect 301 /hazards/landslides-rockfalls/springhill-landslide-north-salt-lake/update-on-springhill-landslide/ https://geology.utah.gov/?page_id=6549
+Redirect 301 /hazards/landslides-rockfalls/landsliding-in-northern-utah-early-2009/ https://geology.utah.gov/?page_id=6533
+Redirect 301 /hazards/landslides-rockfalls/creekside-drive-landslides/ https://geology.utah.gov/?page_id=6535
+Redirect 301 /hazards/landslides-rockfalls/sunset-drive-landslide/ https://geology.utah.gov/?page_id=6536
+Redirect 301 /hazards/landslides-rockfalls/south-weber-landslide/ https://geology.utah.gov/?page_id=6537
+Redirect 301 /hazards/landslides-rockfalls/sage-vista-lane-landslide/ https://geology.utah.gov/?page_id=6539
+Redirect 301 /hazards/landslides-rockfalls/kanab-creek-landslide/ https://geology.utah.gov/?page_id=6540
+Redirect 301 /hazards/landslides-rockfalls/south-weber-landslide-2/ https://geology.utah.gov/?page_id=6541
+Redirect 301 /hazards/landslides-rockfalls/east-capitol-blvd-city-creek-landslide/ https://geology.utah.gov/?page_id=6543
+Redirect 301 /hazards/landslides-rockfalls/rock-fall-in-rockville/ https://geology.utah.gov/?page_id=6531
+Redirect 301 /hazards/landslides-rockfalls/rock-fall-in-provo-2009/ https://geology.utah.gov/?page_id=6532
+Redirect 301 /hazards/landslides-rockfalls/debris-flows-near-spring-lake-santaquin/ https://geology.utah.gov/?page_id=6542
+Redirect 301 /hazards/landslides-rockfalls/debris-flows-in-farmington/ https://geology.utah.gov/?page_id=6544
+Redirect 301 /hazards/landslides-rockfalls/rock-fall-near-devils-slide/ https://geology.utah.gov/?page_id=6545
+Redirect 301 /hazards/landslides-rockfalls/spring-lake-santaquin-debris-flow-photos/ https://geology.utah.gov/?page_id=6546
+Redirect 301 /hazards/problemsoilrock/radon https://geology.utah.gov/?page_id=5269
+Redirect 301 /hazards/homebuyers/ https://geology.utah.gov/?page_id=5287
+Redirect 301 /hazards/hazard-assistance/ https://geology.utah.gov/?page_id=6594
+RedirectMatch 301 ^/hazards/ground-cracks/?$ https://geology.utah.gov/?page_id=5825
+Redirect 301 /hazards/earthquakes-faults/utah-earthquake-working-groups/ https://geology.utah.gov/?page_id=6497
+Redirect 301 /hazards/earthquakes-faults/utah-earthquake-working-groups/liquefaction-advisory-group/ https://geology.utah.gov/?page_id=6500
+Redirect 301 /hazards/earthquakes-faults/utah-earthquake-working-groups/quaternary-fault-parameters/ https://geology.utah.gov/?page_id=6499
+Redirect 301 /hazards/earthquakes-faults/utah-earthquake-working-groups/ground-shaking-working-group/ https://geology.utah.gov/?page_id=6501
+Redirect 301 /hazards/earthquakes-faults/utah-earthquake-working-groups/utah-earthquake-probabilities/ https://geology.utah.gov/?page_id=6502
+Redirect 301 /hazards/earthquakes-faults/utah-earthquake-working-groups/basin-and-range-province-earthquake-working-group/ https://geology.utah.gov/?page_id=6503
+Redirect 301 /hazards/earthquakes-faults/utah-earthquake-working-groups/basin-and-range-province-seismic-hazards-summit/ https://geology.utah.gov/?page_id=6504
+Redirect 301 /hazards/earthquakes-faults/utah-earthquakes/ https://geology.utah.gov/?page_id=5825
+Redirect 301 /hazards/earthquakes-faults/ground-shaking/ https://geology.utah.gov/?page_id=5825
+Redirect 301 /hazards/earthquakes-faults/ground-shaking/earthquake-ground-shaking-levels-for-the-wasatch-front/ https://geology.utah.gov/?page_id=5795 
+Redirect 301 /hazards/earthquakes-faults/utah-faults/earthquake-faults/ https://geology.utah.gov/?page_id=5825
+Redirect 301 /hazards/ground-cracks/earth-fissures/ https://geology.utah.gov/?page_id=10854
+Redirect 301 /hazards/technical-information/ https://geology.utah.gov/?page_id=5828
+Redirect 301 /hazards/technical-information/geologic-hazard-publications/ https://geology.utah.gov/?page_id=5275
+Redirect 301 /hazards/technical-information/site-specific-studies/ https://geology.utah.gov/?page_id=5275
+Redirect 301 /hazards/technical-information/paleoseismology-of-utah-series/ https://geology.utah.gov/?page_id=5283
+Redirect 301 /hazards/homebuyers/guide-to-recognizing-and-reducing-landslide-damage/ https://geology.utah.gov/?page_id=5289
+RedirectMatch 301 ^/map-pub/maps/geologic-hazard-maps/?$ https://geology.utah.gov/?page_id=5104
+Redirect 301 /popular/general-geology/volcanoes/ https://geology.utah.gov/?page_id=5300
+Redirect 301 /popular/general-geology/volcanoes/three-main-types-of-volcanoes-and-utah-volcanoes/ https://geology.utah.gov/?page_id=5300
+Redirect 301 /popular/general-geology/volcanoes/quaternary-volcanic-rocks-of-utah/ https://geology.utah.gov/?page_id=6439
+Redirect 301 /map-pub/maps/geologic-hazard-maps/2010-landslide-maps-by-30-x-60-quadrangle/ https://geology.utah.gov/?page_id=5980
+Redirect 301 /about-us/geologic-programs/geologic-hazards-program/for-consultants-and-design-professionals/community-velocity-model-cvm-and-other-geophysical-data/ https://geology.utah.gov/?page_id=6798
+Redirect 301 /about-us/geologic-programs/geologic-hazards-program/for-consultants-and-design-professionals/community-velocity-model-cvm-and-other-geophysical-data/community-velocity-model-cvm/ https://geology.utah.gov/?page_id=6798
+Redirect 301 /about-us/geologic-programs/geologic-hazards-program/for-consultants-and-design-professionals/community-velocity-model-cvm-and-other-geophysical-data/shallow-shear-wave-velocity-data/ https://geology.utah.gov/?page_id=6798
+Redirect 301 /about-us/geologic-programs/geologic-hazards-program/for-consultants-and-design-professionals/community-velocity-model-cvm-and-other-geophysical-data/deep-basin-structure-data/ https://geology.utah.gov/?page_id=6798
+Redirect 301 /about-us/geologic-programs/geologic-hazards-program/for-consultants-and-design-professionals/ https://geology.utah.gov/?page_id=6794
+Redirect 301 /about-us/geologic-programs/geologic-hazards-program/for-consultants-and-design-professionals/external-publications/ https://geology.utah.gov/?page_id=6794
+Redirect 301 /about-us/geologic-programs/geologic-hazards-program/for-consultants-and-design-professionals/useful-websites/ https://geology.utah.gov/?page_id=10828
+Redirect 301 /about-us/geologic-programs/geologic-hazards-program/for-consultants-and-design-professionals/recommended-report-guidelines/ https://geology.utah.gov/?page_id=6794
+Redirect 301 /hazards/landslides-rockfalls/debris-flow-hazards https://geology.utah.gov/?page_id=13244
+Redirect 301 /resources/energy/geothermal/utah-well-and-spring-database/ https://geology.utah.gov/?page_id=20500
+Redirect 301 /map-pub/new-maps-publications https://geology.utah.gov/?page_id=5140
+Redirect 301 /map-pub/survey-notes/past_survey_notes/ https://geology.utah.gov/?page_id=19383
+Redirect 301 /map-pub/survey-notes/past-issues-from-1976/ https://geology.utah.gov/?page_id=5156
+Redirect 301 /map-pub/survey-notes/quarterly-review-1964-1975/ https://geology.utah.gov/?page_id=5158
+RedirectMatch 301 ^/resources/data-databases/?$ https://geology.utah.gov/?page_id=5145
+Redirect 301 /resources/data-databases/lidar-elevation-data/ https://geology.utah.gov/?page_id=19956
+Redirect 301 /resources/data-databases/aerial-photographs/sample-images/ https://geology.utah.gov/?page_id=5147
+RedirectMatch 301 ^/resources/data-databases/aerial-photographs/?$ https://geology.utah.gov/?page_id=5147
+Redirect 301 /resources/data-databases/aerial-photographs/aerial-photo-comparisons/ https://geology.utah.gov/?page_id=5147
+Redirect 301 /resources/data-databases/aerial-photographs/historical-aerial-photography-compilations/ https://geology.utah.gov/?page_id=5147
+Redirect 301 /resources/data-databases/abandoned-coal-mines/ https://geology.utah.gov/?page_id=19461
+Redirect 301 /resources/data-databases/wells-springs/ https://geology.utah.gov/?page_id=20500
+Redirect 301 /resources/data-databases/npwd/ https://geology.utah.gov/?page_id=22759
+Redirect 301 /resources/data-databases/ucrc-inventory/ https://geology.utah.gov/?page_id=29579
+Redirect 301 /resources/data-databases/utah-mineral-occurrence-system/ https://geology.utah.gov/?page_id=22129
+Redirect 301 /resources/data-databases/utah-mining-districts/ https://geology.utah.gov/?page_id=22133
+Redirect 301 /resources/data-databases/groundwater-monitoring/ https://geology.utah.gov/?page_id=5822
+Redirect 301 /resources/data-databases/interactive-maps/ https://geology.utah.gov/?page_id=30410
+Redirect 301 /map-pub/map-publication-details/ https://geology.utah.gov/?page_id=5142
+Redirect 301 /map-pub/maps/geologic-maps/state-of-utah-geologic-maps/ https://geology.utah.gov/?page_id=5101
+Redirect 301 /map-pub/maps/geologic-maps/7-5-minute-quadrangle/ https://geology.utah.gov/?page_id=5101
+Redirect 301 /map-pub/maps/geologic-maps/list-7-5-minute-geologic-maps/ https://geology.utah.gov/?page_id=5101
+Redirect 301 /map-pub/maps/geologic-maps/30x60-minute-quadrangle/ https://geology.utah.gov/?page_id=5101
+Redirect 301 /map-pub/maps/geologic-maps/1x2-degree-quadrangle/ https://geology.utah.gov/?page_id=5101
+Redirect 301 /map-pub/maps/geologic-maps/non-quadrangle-geologic-maps/ https://geology.utah.gov/?page_id=5101
+Redirect 301 /map-pub/maps/geologic-maps/national-state-parks-geologic-maps/ https://geology.utah.gov/?page_id=5101
+Redirect 301 /map-pub/maps/geologic-maps/postcard-or-small-geologic-maps/ https://geology.utah.gov/?page_id=5101
+Redirect 301 /map-pub/maps/groundwater-maps/ https://geology.utah.gov/?page_id=6460
+Redirect 301 /map-pub/maps/gis/ https://geology.utah.gov/?page_id=5101
+Redirect 301 /map-pub/maps/geologic-resource-maps/ https://geology.utah.gov/?page_id=5129
+Redirect 301 /popular/places-to-go/geologic-guides/virtual-overlay-field-quide/ https://geology.utah.gov/?page_id=24941
+Redirect 301 /resources/data-databases/analytical-data/ https://geology.utah.gov/?page_id=5234
+RedirectMatch 301 ^/map-pub/?$ https://geology.utah.gov/?page_id=5142
+
+RedirectMatch 301 ^/about-us/geologic-programs/?$ https://geology.utah.gov/?page_id=17440
+RedirectMatch 301 ^/about-us/geologic-programs/energy-minerals-program/?$ https://geology.utah.gov/?page_id=6584
+RedirectMatch 301 ^/about-us/geologic-programs/geologic-hazards-program/?$ https://geology.utah.gov/?page_id=6583
+RedirectMatch 301 ^/about-us/geologic-programs/geologic-mapping-program/?$ https://geology.utah.gov/?page_id=6586
+Redirect 301 /about-us/geologic-programs/geologic-information-outreach-program/ https://geology.utah.gov/?page_id=6585
+Redirect 301 /about-us/geologic-programs/groundwater-program/ https://geology.utah.gov/?page_id=6587
+Redirect 301 /about-us/ugs-board/ https://geology.utah.gov/?page_id=5338
+Redirect 301 /about-us/geologic-programs/energy-minerals-program/utah-core-research-center/ https://geology.utah.gov/?page_id=5230
+Redirect 301 /about-us/contact-us/ https://geology.utah.gov/?page_id=17440
+Redirect 301 /about-us/location-map/ https://geology.utah.gov/?page_id=5328
+Redirect 301 /about-us/geologic-programs/geologic-hazards-program/governors-geologic-hazards-working-group/ https://geology.utah.gov/?page_id=6598
+Redirect 301 /about-us/geologic-programs/geologic-mapping-program/permit-application-for-paleontological-investigations/ https://geology.utah.gov/?page_id=6606
+Redirect 301 /about-us/services/ https://geology.utah.gov/?page_id=17440
+Redirect 301 /about-us/publication-series/ https://geology.utah.gov/?page_id=5142
+Redirect 301 /about-us/wetlands-program/ https://geology.utah.gov/?page_id=6587
+Redirect 301 /about-us/groundwater-program/ https://geology.utah.gov/?page_id=6587
+
+
+Redirect 301 /calendar2020 https://utahdnr.maps.arcgis.com/apps/MapJournal/index.html?appid=bf6bedd25df84fb4a05af0a0038bdf1c
+
+#These are for after changing the permalinks on long-named pages
+RedirectMatch 301 ^/maps-publications/(.*)$ /map-pub/$1
+RedirectMatch 301 ^/maps-publications(.*)$ /map-pub/$1
+RedirectMatch 301 ^/geologic-resources/(.*)$ /resources/$1
+RedirectMatch 301 ^/geologic-resources(.*)$ /resources/$1
+RedirectMatch 301 ^/popular-geology/(.*)$ /popular/$1
+RedirectMatch 301 ^/popular-geology(.*)$ /popular/$1
+RedirectMatch 301 ^/for-teachers/(.*)$ /teachers/$1
+RedirectMatch 301 ^/for-teachers(.*)$ /teachers/$1
+RedirectMatch 301 ^/teachers-2(.*)$ /teachers/$1
+
+#Alias /online/ofr/ofr-360.pdf "E:/www/ugs_oldsite/online/ofr/ofr-360.pdf"
+
+
+
+
+</IfModule>
