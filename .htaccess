@@ -743,6 +743,11 @@ Redirect 301 /about-us/publication-series/ https://geology.utah.gov/?page_id=514
 Redirect 301 /about-us/wetlands-program/ https://geology.utah.gov/?page_id=6587
 Redirect 301 /about-us/groundwater-program/ https://geology.utah.gov/?page_id=6587
 
+Redirect 301 /popular/places-to-go/geologic-guides/building-stones-of-downtown-salt-lake-city/building-stone-walking-tour-stops/ https://geology.utah.gov/?page_id=5560
+Redirect 301 /popular/places-to-go/geologic-guides/building-stones-of-downtown-salt-lake-city/how-old-are-these-rocks/ https://geology.utah.gov/?page_id=5560
+Redirect 301 /popular/places-to-go/geologic-guides/building-stones-of-downtown-salt-lake-city/what-stones-will-i-see-on-my-tour/ https://geology.utah.gov/?page_id=5560
+Redirect 301 /popular/places-to-go/geologic-guides/building-stones-of-downtown-salt-lake-city/what-is-building-stone/ https://geology.utah.gov/?page_id=5560
+
 
 Redirect 301 /calendar2020 https://utahdnr.maps.arcgis.com/apps/MapJournal/index.html?appid=bf6bedd25df84fb4a05af0a0038bdf1c
 
