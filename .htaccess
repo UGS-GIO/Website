@@ -748,8 +748,26 @@ Redirect 301 /popular/places-to-go/geologic-guides/building-stones-of-downtown-s
 Redirect 301 /popular/places-to-go/geologic-guides/building-stones-of-downtown-salt-lake-city/what-stones-will-i-see-on-my-tour/ https://geology.utah.gov/?page_id=5560
 Redirect 301 /popular/places-to-go/geologic-guides/building-stones-of-downtown-salt-lake-city/what-is-building-stone/ https://geology.utah.gov/?page_id=5560
 
-
 Redirect 301 /calendar2020 https://utahdnr.maps.arcgis.com/apps/MapJournal/index.html?appid=bf6bedd25df84fb4a05af0a0038bdf1c
+
+RedirectMatch 301 ^/water/?$ https://geology.utah.gov/?page_id=5222
+RedirectMatch 301 ^/resources/groundwater/?$ https://geology.utah.gov/?page_id=5222
+Redirect 301 /resources/groundwater/groundwater-maps/ https://geology.utah.gov/?page_id=6460
+Redirect 301 /resources/groundwater/groundwater-resources/ https://geology.utah.gov/?page_id=6460
+Redirect 301 /resources/groundwater/snake-valley-monitoring-network/ https://geology.utah.gov/?page_id=13160
+Redirect 301 /resources/groundwater/snake-valley-monitoring-network/snake-valley-surface-water-data/ https://geology.utah.gov/?page_id=13174
+Redirect 301 /resources/groundwater/snake-valley-monitoring-network/snake-valley-well-data/ https://geology.utah.gov/?page_id=21854
+Redirect 301 /resources/groundwater/rechargedischarge-areas/ https://geology.utah.gov/?page_id=6460
+Redirect 301 /resources/groundwater/sensitivity-vulnerability-to-pesticides/ https://geology.utah.gov/?page_id=6460
+Redirect 301 /resources/groundwater/water-quality/ https://geology.utah.gov/?page_id=6460
+Redirect 301 /resources/groundwater/aquifer-storage-recovery/ https://geology.utah.gov/?page_id=6460
+Redirect 301 /resources/groundwater/wastewater-disposal-systems/ https://geology.utah.gov/?page_id=6460
+RedirectMatch 301 ^/resources/wetlands/?$ https://geology.utah.gov/?page_id=5224
+Redirect 301 /resources/wetlands/wetland-mapping-and-spatial-data/ https://geology.utah.gov/?page_id=6460
+Redirect 301 /resources/wetlands/wetland-monitoring-and-assessment/ https://geology.utah.gov/?page_id=49190
+Redirect 301 /resources/wetlands/wetland-outreach-and-education/ https://geology.utah.gov/?page_id=5224
+Redirect 301 /resources/wetlands/additional-wetland-resources/ https://geology.utah.gov/?page_id=6460
+Redirect 301 /resources/wetlands/wetlands-publications/ https://geology.utah.gov/?page_id=6460
 
 #These are for after changing the permalinks on long-named pages
 RedirectMatch 301 ^/maps-publications/(.*)$ /map-pub/$1
