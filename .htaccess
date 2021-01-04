@@ -749,12 +749,13 @@ Redirect 301 /popular/places-to-go/geologic-guides/building-stones-of-downtown-s
 Redirect 301 /popular/places-to-go/geologic-guides/building-stones-of-downtown-salt-lake-city/what-is-building-stone/ https://geology.utah.gov/?page_id=5560
 
 Redirect 301 /calendar2020 https://utahdnr.maps.arcgis.com/apps/MapJournal/index.html?appid=bf6bedd25df84fb4a05af0a0038bdf1c
+Redirect 301 /popular/general-geology/great-salt-lake/lake-bonneville-a-brief-history/ https://geology.utah.gov/?page_id=5298
 
 RedirectMatch 301 ^/water/?$ https://geology.utah.gov/?page_id=5222
 RedirectMatch 301 ^/resources/groundwater/?$ https://geology.utah.gov/?page_id=5222
 Redirect 301 /resources/groundwater/groundwater-maps/ https://geology.utah.gov/?page_id=6460
 Redirect 301 /resources/groundwater/groundwater-resources/ https://geology.utah.gov/?page_id=6460
-Redirect 301 /resources/groundwater/snake-valley-monitoring-network/ https://geology.utah.gov/?page_id=13160
+RedirectMatch 301 ^/resources/groundwater/snake-valley-monitoring-network/?$ https://geology.utah.gov/?page_id=13160
 Redirect 301 /resources/groundwater/snake-valley-monitoring-network/snake-valley-surface-water-data/ https://geology.utah.gov/?page_id=13174
 Redirect 301 /resources/groundwater/snake-valley-monitoring-network/snake-valley-well-data/ https://geology.utah.gov/?page_id=21854
 Redirect 301 /resources/groundwater/rechargedischarge-areas/ https://geology.utah.gov/?page_id=6460
