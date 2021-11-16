@@ -22,7 +22,7 @@ body:
           - label: Figure/Photo Change
           - label: New Content Addition
           - label: Content Ommission
-- type: textarea
+  - type: textarea
     id: changedescription
     attributes:
         label: Describe the change you would like to request.
