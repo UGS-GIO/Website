@@ -22,8 +22,6 @@ body:
       - label: Figure/Photo Change
       - label: New Content Addition
       - label: Content Ommission
-    validations:
-        required: true
   - type: textarea
     id: changedescription
     attributes:
