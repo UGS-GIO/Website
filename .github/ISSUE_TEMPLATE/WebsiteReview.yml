@@ -5,11 +5,11 @@ labels: ["enhancement", "feature request"]
 assignees:
   - Mackenzie-Cope
 body:
-  - type: textarea
+  - type: input
     id: webpageURL
     attributes:
-        label: On what web page are you requesting a change? (page title/page URL)
-        placeholder: List the page title and/or the page URL.
+        label: On what web page are you requesting a change?
+        placeholder: Page Title and/or Page URL
     validations:
         required: true
   - type: textarea
