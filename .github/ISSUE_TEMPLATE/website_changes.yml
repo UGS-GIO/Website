@@ -1,7 +1,7 @@
-name: TEST Website Change Requests
+name: Website Change Requests
 description: test
-title: I Think [this cool thing] Would be a Great Addition to the Website
-labels: ["enhancement", "feature request"]
+title: Page Title,  Requested change (i.e. change content, change photos, add new section, etc.)
+labels: ["enhancement"]
 assignees:
   - Mackenzie-Cope
 body:
