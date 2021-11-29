@@ -1,6 +1,6 @@
 name: Website Change Request
 description: This form is to be used to request changes to the UGS website.
-title: Page Title,  Requested change (i.e. change content, change photos, add new section, etc.)
+title: Page Title, Requested change (i.e. change content, change photos, add new section, etc.)
 labels: ["enhancement"]
 assignees:
   - Mackenzie-Cope
