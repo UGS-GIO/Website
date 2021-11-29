@@ -16,14 +16,7 @@ body:
     id: changedescription
     attributes:
         label: Describe the change you would like to request.
-        placeholder: A clear and concise description of what you want to happen and what value it will bring. Ex. This will make my life better because [...]. Feel free to attach screenshots or anything you think would help show what you're describing.
-    validations:
-        required: true
-  - type: textarea
-    id: audienceImpact
-    attributes:
-        label: What impact will this new functionality have on this application's audience?
-        placeholder: A clear and concise description of how this will positively impact a broad audience of users.
+        placeholder: A clear and concise description of what you want to happen and what value it will bring. Ex. Change intro text to this "...." Feel free to attach screenshots or anything you think would help show what you're describing.
     validations:
         required: true
   - type: dropdown
