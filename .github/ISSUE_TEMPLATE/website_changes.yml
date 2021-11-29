@@ -32,14 +32,14 @@ body:
   - type: textarea
     id: moreEvidence
     attributes:
-        label: If urgent, please explain.
+        label: If high urgency, please explain.
         placeholder: 
     validations:
         required: false
   - type: textarea
     id: additionalinfo
     attributes:
-        label: Additional Notes
+        label: Additional notes
         placeholder: 
     validations:
         required: false
