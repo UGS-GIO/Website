@@ -32,8 +32,8 @@ body:
   - type: textarea
     id: moreEvidence
     attributes:
-        label: Please provide additional evidence from other users to support medium and high ranking
-        placeholder: Attach emails, user-feedback, etc. showing evidence that this new feature would have a positive impact.
+        label: If urgent, please explain.
+        placeholder: 
     validations:
         required: false
   - type: markdown
