@@ -36,7 +36,14 @@ body:
         placeholder: 
     validations:
         required: false
+  - type: textarea
+    id: additional info
+    attributes:
+        label: Additional Notes
+        placeholder: 
+    validations:
+        required: false
   - type: markdown
     attributes:
-        value: "### **All feature requests will be reviewed for future application releases**"
+        value: "### **All website change requests will follow the proper review process.**"
 
