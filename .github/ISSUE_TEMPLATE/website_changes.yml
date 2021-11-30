@@ -1,10 +1,13 @@
 name: Website Change Request
 description: This form is to be used to request changes to the UGS website.
-title: Page Title, Requested change (i.e. change content, change photos, add new section, etc.)
+title: Page Title, Requested change(s) (i.e. change content, change photos, add new section, etc.)
 labels: ["enhancement"]
 assignees:
   - Mackenzie-Cope
 body:
+  - type: markdown
+    attributes:
+        value: "### **If you have multiple changes for a web page, please list them all here and not in separate issues. This will help us organize and prioritize change requests per web page.**"
   - type: input
     id: webpageURL
     attributes:
