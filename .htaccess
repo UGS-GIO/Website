@@ -768,6 +768,8 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 	Redirect 301 /2020-earth-science-week https://geology.utah.gov/?page_id=54307
 	Redirect 301 /2020-earth-science-week-mobile https://geology.utah.gov/?page_id=53965
 	Redirect 301 /earth-science-week-online https://geology.utah.gov/?page_id=54307
+	Redirect 301 /about-us/dei-statement https://geology.utah.gov/?page_id=57145
+	Redirect 301 /great-salt-lake https://geology.utah.gov/?page_id=5298
 	
 	RedirectMatch 301 ^/water/?$ https://geology.utah.gov/?page_id=5222
 	RedirectMatch 301 ^/resources/groundwater/?$ https://geology.utah.gov/?page_id=5222
@@ -787,7 +789,39 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 	Redirect 301 /resources/wetlands/wetland-outreach-and-education/ https://geology.utah.gov/?page_id=5224
 	Redirect 301 /resources/wetlands/additional-wetland-resources/ https://geology.utah.gov/?page_id=6460
 	Redirect 301 /resources/wetlands/wetlands-publications/ https://geology.utah.gov/?page_id=6460
+	Redirect 301 /map-pub/maps/interactive-maps/groundwater-monitoring/ https://apps.geology.utah.gov/gwdp/
 	
+	RedirectMatch 301 ^/resources/energy/?$ https://geology.utah.gov/?page_id=5169
+	RedirectMatch 301 ^/resources/energy/oil-gas/?$ https://geology.utah.gov/?page_id=46084
+	Redirect 301 /resources/energy/coal-coalbed-methane/coalbed-methane-plays/ https://geology.utah.gov/?page_id=6407
+	Redirect 301 /resources/energy/oil-shale/ https://geology.utah.gov/?page_id=5178
+	Redirect 301 /resources/energy/tar-sands/ https://geology.utah.gov/?page_id=5192
+	RedirectMatch 301 ^/resources/energy/coal-coalbed-methane/?$ https://geology.utah.gov/?page_id=5181
+	RedirectMatch 301 ^/resources/mineral-resources/?$ https://geology.utah.gov/?page_id=5206
+	Redirect 301 /resources/energy/geothermal https://geology.utah.gov/?page_id=5185
+	RedirectMatch 301 ^/resources/energy/carbon-sequestration/?$ https://geology.utah.gov/?page_id=28004
+	Redirect 301 /resources/energy/carbon-sequestration/carbon-sequestration-project/ https://geology.utah.gov/?page_id=5188
+	Redirect 301 /resources/energy/geologic-resource-maps/ https://geology.utah.gov/?page_id=5129
+	Redirect 301 /resources/energy/utah-energy-and-mineral-statistics/ https://geology.utah.gov/?page_id=5173
+	Redirect 301 /resources/energy/energy-mineral-research/ https://geology.utah.gov/?page_id=5194
+	Redirect 301 /resources/energy/oil-gas/produced-water/ https://geology.utah.gov/?page_id=6364
+	Redirect 301 /resources/energy/oil-gas/uinta-basin-water-study/ https://geology.utah.gov/?page_id=6366
+	Redirect 301 /resources/energy/coal-coalbed-methane/mercury-in-coal/ https://geology.utah.gov/?page_id=6403
+	Redirect 301 /resources/energy/oil-gas/shale-oil/ https://geology.utah.gov/?page_id=6312
+	Redirect 301 /resources/energy/oil-gas/tight-gas-sands/ https://geology.utah.gov/?page_id=6314
+	RedirectMatch 301 ^/resources/energy/oil-gas/shale-gas/?$ https://geology.utah.gov/?page_id=46088
+	Redirect 301 /resources/energy/oil-gas/shale-gas/paleozoic-shale-gas-resources/ https://geology.utah.gov/?page_id=6318
+	Redirect 301 /resources/energy/oil-gas/shale-gas/cret-shale-gas/ https://geology.utah.gov/?page_id=6320
+	Redirect 301 /resources/energy/oil-gas/leadville-limestone/ https://geology.utah.gov/?page_id=6322
+	Redirect 301 /resources/energy/oil-gas/pump/ https://geology.utah.gov/?page_id=6324
+	Redirect 301 /resources/energy/oil-gas/paradox-basin-ii/ https://geology.utah.gov/?page_id=6328
+	Redirect 301 /resources/energy/oil-gas/green-river-formation-project/ https://geology.utah.gov/?page_id=6334
+	Redirect 301 /resources/energy/oil-gas/bluebell/ https://geology.utah.gov/?page_id=6336
+	Redirect 301 /resources/energy/oil-gas/ferron-sandstone/ https://geology.utah.gov/?page_id=6338
+	Redirect 301 /resources/energy/oil-gas/paradox-basin/ https://geology.utah.gov/?page_id=6356
+	Redirect 301 /resources/mineral-resources/u-vfiles/ https://geology.utah.gov/?page_id=57345
+	RedirectMatch 301 ^/resources/?$ https://geology.utah.gov/?page_id=5169
+		
 #These are for after changing the permalinks on long-named pages
 	RedirectMatch 301 ^/maps-publications/(.*)$ /map-pub/$1
 	RedirectMatch 301 ^/maps-publications(.*)$ /map-pub/$1
